@@ -4,17 +4,19 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	arrowhs "github.com/enviodev/hypersync-client-go/arrow"
-	"github.com/enviodev/hypersync-client-go/options"
-	"github.com/enviodev/hypersync-client-go/types"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/pkg/errors"
 	"io"
 	"math/rand"
 	"net"
 	"net/http"
 	"strings"
 	"time"
+
+	arrowhs "github.com/enviodev/hypersync-client-go/arrow"
+	"github.com/enviodev/hypersync-client-go/options"
+	"github.com/enviodev/hypersync-client-go/types"
+	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/pkg/errors"
 )
 
 type Client struct {
@@ -24,27 +26,50 @@ type Client struct {
 	rpcClient *ethclient.Client
 }
 
+type BearerTokenTransport struct {
+	underlyingTransport http.RoundTripper
+	bearerToken         *string
+}
+
+func (t *BearerTokenTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	// We shouldn't modify the original request, so we clone it
+	clonedRequest := req.Clone(req.Context())
+
+	clonedRequest.Header.Set("Authorization", fmt.Sprintf("Bearer %s", *t.bearerToken))
+
+	return t.underlyingTransport.RoundTrip(clonedRequest)
+}
+
 func NewClient(ctx context.Context, opts options.Node) (*Client, error) {
 	// TODO: What if user does not require rpcClient at all?
+
 	rpcClient, err := ethclient.DialContext(ctx, opts.RpcEndpoint)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to connect to RPC client")
 	}
+
+	rpc.DialOptions(ctx, opts.RpcEndpoint, rpc.WithHTTPAuth(func(h http.Header) error {
+		h.Set("Authorization", "Bearer "+*opts.BearerToken)
+		return nil
+	}))
 
 	return &Client{
 		ctx:  ctx,
 		opts: opts,
 		client: &http.Client{
 			Timeout: 2 * time.Minute,
-			Transport: &http.Transport{
-				DialContext: (&net.Dialer{
-					Timeout:   30 * time.Second,
-					KeepAlive: 30 * time.Second,
-				}).DialContext,
-				MaxIdleConns:          100,
-				IdleConnTimeout:       90 * time.Second,
-				TLSHandshakeTimeout:   10 * time.Second,
-				ExpectContinueTimeout: 1 * time.Second,
+			Transport: &BearerTokenTransport{
+				underlyingTransport: &http.Transport{
+					DialContext: (&net.Dialer{
+						Timeout:   30 * time.Second,
+						KeepAlive: 30 * time.Second,
+					}).DialContext,
+					MaxIdleConns:          100,
+					IdleConnTimeout:       90 * time.Second,
+					TLSHandshakeTimeout:   10 * time.Second,
+					ExpectContinueTimeout: 1 * time.Second,
+				},
+				bearerToken: opts.BearerToken,
 			},
 		},
 		rpcClient: rpcClient,
@@ -209,7 +234,7 @@ func DoArrow[R any](ctx context.Context, c *Client, url string, method string, p
 		responseData, _ := io.ReadAll(resp.Body)
 		return nil, fmt.Errorf("unexpected status code: %d, response: %s", resp.StatusCode, string(responseData))
 	}
-	
+
 	arrowReader, err := arrowhs.NewQueryResponseReader(resp.Body)
 	if err != nil {
 		return nil, errors.Wrap(err, "could not parse the ipc/arrow response while attempting to read")
