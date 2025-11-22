@@ -2,14 +2,15 @@ package decoder
 
 import (
 	"fmt"
-	"github.com/enviodev/hypersync-client-go/contracts"
-	"github.com/enviodev/hypersync-client-go/types"
-	"github.com/enviodev/hypersync-client-go/utils"
+	"math/big"
+	"strings"
+
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/pkg/errors"
-	"math/big"
-	"strings"
+	"github.com/sophon-org/hypersync-client-go/contracts"
+	"github.com/sophon-org/hypersync-client-go/types"
+	"github.com/sophon-org/hypersync-client-go/utils"
 )
 
 // EthereumTopic represents a single decoded topic from an Ethereum event log. Topics are attributes

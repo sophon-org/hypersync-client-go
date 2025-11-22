@@ -3,11 +3,12 @@ package hypersyncgo
 import (
 	"context"
 	"fmt"
-	"github.com/enviodev/hypersync-client-go/types"
 	"math/big"
 	"math/rand"
 	"net/http"
 	"time"
+
+	"github.com/sophon-org/hypersync-client-go/types"
 )
 
 type ArchiveHeight struct {

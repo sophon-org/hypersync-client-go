@@ -11,12 +11,12 @@ import (
 	"strings"
 	"time"
 
-	arrowhs "github.com/enviodev/hypersync-client-go/arrow"
-	"github.com/enviodev/hypersync-client-go/options"
-	"github.com/enviodev/hypersync-client-go/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/pkg/errors"
+	arrowhs "github.com/sophon-org/hypersync-client-go/arrow"
+	"github.com/sophon-org/hypersync-client-go/options"
+	"github.com/sophon-org/hypersync-client-go/types"
 )
 
 type Client struct {

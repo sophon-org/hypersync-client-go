@@ -1,11 +1,12 @@
 package contracts
 
 import (
-	"github.com/enviodev/hypersync-client-go/utils"
 	"testing"
 
-	"github.com/enviodev/hypersync-client-go/logger"
+	"github.com/sophon-org/hypersync-client-go/utils"
+
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/sophon-org/hypersync-client-go/logger"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
 )

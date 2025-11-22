@@ -5,14 +5,15 @@ package main
 
 import (
 	"context"
-	"github.com/enviodev/hypersync-client-go"
-	"github.com/enviodev/hypersync-client-go/logger"
-	"github.com/enviodev/hypersync-client-go/options"
-	"github.com/enviodev/hypersync-client-go/types"
-	"github.com/enviodev/hypersync-client-go/utils"
-	"go.uber.org/zap"
 	"math/big"
 	"time"
+
+	hypersyncgo "github.com/enviodev/hypersync-client-go"
+	"github.com/sophon-org/hypersync-client-go/logger"
+	"github.com/sophon-org/hypersync-client-go/options"
+	"github.com/sophon-org/hypersync-client-go/types"
+	"github.com/sophon-org/hypersync-client-go/utils"
+	"go.uber.org/zap"
 )
 
 func main() {

@@ -2,11 +2,12 @@ package contracts
 
 import (
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
 	"sync"
 
-	"github.com/enviodev/hypersync-client-go/utils"
+	"github.com/ethereum/go-ethereum/common"
+
 	"github.com/pkg/errors"
+	"github.com/sophon-org/hypersync-client-go/utils"
 )
 
 // Manager manages a registry of contracts, allowing for thread-safe operations.

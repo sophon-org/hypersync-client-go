@@ -2,16 +2,17 @@ package hypersyncgo
 
 import (
 	"context"
-	"github.com/enviodev/hypersync-client-go/types"
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/pkg/errors"
-	"math/big"
+	"github.com/sophon-org/hypersync-client-go/types"
 )
 
 type ContractCreatorResponse struct {
-	Number *big.Int    `json:"number"`
-	Hash   common.Hash `json:"hash"`
-	From common.Address `json:"from"`
+	Number *big.Int       `json:"number"`
+	Hash   common.Hash    `json:"hash"`
+	From   common.Address `json:"from"`
 }
 
 // GetContractCreator fetches the transaction details of the creator of a specified contract address.
@@ -49,6 +50,6 @@ func (c *Client) GetContractCreator(ctx context.Context, addr common.Address) (*
 	return &ContractCreatorResponse{
 		Number: response.Data.Blocks[0].Number,
 		Hash:   *response.Data.Transactions[0].Hash,
-		From: 	*response.Data.Transactions[0].From,
+		From:   *response.Data.Transactions[0].From,
 	}, nil
 }

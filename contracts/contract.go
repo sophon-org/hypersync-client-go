@@ -2,11 +2,12 @@ package contracts
 
 import (
 	"fmt"
-	"github.com/enviodev/hypersync-client-go/utils"
+	"strings"
+
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/pkg/errors"
-	"strings"
+	"github.com/sophon-org/hypersync-client-go/utils"
 )
 
 // Contract represents an Ethereum smart contract, including its address, name, standard, and ABI.

@@ -1,8 +1,8 @@
 package contracts
 
 import (
-	"github.com/enviodev/hypersync-client-go/utils"
 	"github.com/pkg/errors"
+	"github.com/sophon-org/hypersync-client-go/utils"
 )
 
 var defaultContracts = map[utils.NetworkID][]*Contract{

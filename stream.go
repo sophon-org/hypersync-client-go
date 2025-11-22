@@ -5,10 +5,10 @@ import (
 	"math/big"
 	"sync"
 
-	"github.com/enviodev/hypersync-client-go/options"
-	"github.com/enviodev/hypersync-client-go/streams"
-	"github.com/enviodev/hypersync-client-go/types"
 	"github.com/pkg/errors"
+	"github.com/sophon-org/hypersync-client-go/options"
+	"github.com/sophon-org/hypersync-client-go/streams"
+	"github.com/sophon-org/hypersync-client-go/types"
 	"golang.org/x/sync/errgroup"
 )
 
